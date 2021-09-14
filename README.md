@@ -8,11 +8,11 @@ Current version is 0.1
 ### Installation
 Make sure you have installed Python version 3.8.5 or above
 
-No other dependencies is currenly in used. For easy installation of dependencies in the future, usage of Anaconda is recommended. To set up the environment with Anaconda:
+No other dependencies is currenly in used. For easy installation of dependencies in the future, usage of Anaconda is recommended. To set up the development environment with Anaconda:
 ```
 conda env create --file environment.yml
 ```
-Activate the created environment:
+Then, activate the newly created environment:
 ```
 conda activate ssg_env
 ```
