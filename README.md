@@ -1,6 +1,6 @@
 # cool_ssg_generator
 A simple SSG generator made with Python.
-Current version is 0.1
+Current version is 0.1.0
 
 ### Dependencies
 - Python 3.8.5
