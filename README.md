@@ -35,3 +35,6 @@ For more usage, please refer to:
 ```console
 python main.py -h
 ```
+
+### License
+[MIT](LICENSE)

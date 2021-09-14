@@ -1,12 +1,19 @@
 import argparse
 import os
+import sys
 import helper
 
 def main():
     args = parseArguments()
     input = args.input
+
+    if input is None:
+        print("ERROR: Input cannot be empty. Please specify input file or folder with --input flag, or refer to --help for documentation")
+        sys.exit(1)
+
     stylesheets = args.stylesheet
     
+    #check if output is specified
     if args.output is None:
         output = ".\dist"
         helper.emptyFolder()
@@ -14,11 +21,10 @@ def main():
         output = args.output[0]
     else:
         print("ERROR: Could not find output folder")
-        quit()
+        sys.exit(1)
 
     #check if input is a file or a directory
     for item in input:
-        #item = item.replace("/", "\\")
         if os.path.isdir(item):
             helper.generateFromDirectory(item, output, stylesheets)
         elif os.path.isfile(item):
