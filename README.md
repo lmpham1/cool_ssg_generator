@@ -6,7 +6,7 @@ Current version is 0.1.0
 - Python 3.8.5
 
 ### Installation
-Make sure you have installed Python version 3.8.5 or above
+Make sure you have installed Python version 3.8.5 or above. No other dependencies is currently needed
 
 ### Basic Usage
 Generate a website from a file or folder:
