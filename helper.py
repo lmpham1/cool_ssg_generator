@@ -35,8 +35,10 @@ def createHTMLString(filename, contents, stylesheets):
         contents[index] = contents[index].strip()
         if index == 0 and len(contents[index]) != 0 and len(contents[index+1].strip()) == 0 and len(contents[index+2].strip()) == 0:
             title = contents[0]
-            contents[0] = "<h1>" + contents[0] + "</h1>"
+            contents[0] = "<h1>" + contents[0] + "</h1>\n<p>"
             index = 3
+        elif index == 0:
+            contents[index] = "<p>" + contents[index]
         if len(contents[index]) == 0:
             contents[index] = """</p>
                 <p>
