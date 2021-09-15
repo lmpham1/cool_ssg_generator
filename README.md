@@ -6,7 +6,7 @@ Current version is 0.1.0
 - Python 3.8.5
 
 ### Installation
-Make sure you have installed Python version 3.8.5 or above. No other dependencies is currently needed. Usage of venv or Anaconda is recommended
+Make sure you have installed Python version 3.8.5 or above. No other dependencies is currently needed. Usage of venv or Anaconda is recommended (but not required)
 
 ### Basic Usage
 Generate a website from a file or folder:
