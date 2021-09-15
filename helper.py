@@ -19,11 +19,42 @@ def generateFromFile(inFile, output, stylesheets):
 
 # Generate HTML files with the same structure as the input folder, and export to output folder
 def generateFromDirectory(inDir, output, stylesheets):
+    links = []
     for root, dirs, files in os.walk(inDir):
         for file in files:
             filepath = os.path.join(root, file)
             outputPath = filepath[filepath.find('\\'):filepath.rfind('\\')].replace("\\","/")
             generateFromFile(filepath, output + outputPath, stylesheets)
+            links.append("<a class=\"link\" href=\"{file}\">{title}</a>".format(file="." + outputPath + "/" + file[0:file.rfind('.')] + ".html", title=file[0:file.rfind('.')]))
+    
+    indexSkeleton = """
+        <!doctype html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <title>cool_ssg_generator Home Page</title>
+                <link rel="stylesheet" href="public/stylesheet/default.css">
+                {stylesheets}
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+            </head>
+            <body>
+            <h1>cool_ssg_generator v0.1.0</h1>
+            <div class=\"link-container\">
+                {contents}
+            </div>
+            </body>
+        </html>    
+    """
+    styleHTML = ""
+    if stylesheets is not None:
+        for stylesheet in stylesheets:
+            styleHTML += "<link rel=\"stylesheet\" href={}>\n".format(stylesheet)
+    
+    indexHTMLContents = indexSkeleton.format(stylesheets=styleHTML, contents='\n'.join(links))
+
+    outputFile = open(output + "/index.html", "w", encoding="utf-8")
+    outputFile.write(indexHTMLContents)
+    outputFile.close()
 
 # Create HTML mark up and append the content
 # return the complete HTML mark up for a page
@@ -51,6 +82,7 @@ def createHTMLString(filename, contents, stylesheets):
             <head>
                 <meta charset="utf-8">
                 <title>{title}</title>
+                <link rel="stylesheet" href="public/stylesheet/default.css">
                 {stylesheets}
                 <meta name="viewport" content="width=device-width, initial-scale=1">
             </head>
@@ -61,8 +93,8 @@ def createHTMLString(filename, contents, stylesheets):
     """
 
     styleHTML = ""
-    for stylesheet in stylesheets:
-        if stylesheet is not None:
+    if stylesheets is not None:
+        for stylesheet in stylesheets:
             styleHTML += "<link rel=\"stylesheet\" href={}>\n".format(stylesheet)
     
     transformedContent = ''.join(contents)    
