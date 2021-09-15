@@ -6,17 +6,7 @@ Current version is 0.1.0
 - Python 3.8.5
 
 ### Installation
-Make sure you have installed Python version 3.8.5 or above
-
-No other dependencies is currenly in used. For easy installation of dependencies in the future, usage of Anaconda is recommended. To set up the development environment with Anaconda:
-```console
-conda env create --file environment.yml
-```
-Then, activate the newly created environment:
-```console
-conda activate ssg_env
-```
-Alternatively, you can install dependencies using _pip/pip3_
+Make sure you have installed Python version 3.8.5 or above. No other dependencies is currently needed. Usage of venv or Anaconda is recommended
 
 ### Basic Usage
 Generate a website from a file or folder:
