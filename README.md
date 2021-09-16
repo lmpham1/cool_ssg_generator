@@ -8,7 +8,7 @@ Current version is 0.1.0
 ### Installation
 Make sure you have installed Python version 3.8.5 or above. No other dependencies is currently needed. Usage of venv or Anaconda is recommended (but not required)
 
-### Set Up Environment with Anaconda (optional)
+#### For Anaconda users (optional)
 To quickly set up a virtual development environment with Anaconda, use the following commands in the project's root folder:
 ```console
 conda env create -f environment.yml
