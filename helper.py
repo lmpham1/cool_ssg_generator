@@ -4,13 +4,13 @@ import shutil
 # Generate HTML file from inFile, and export to output folder
 def generateFromFile(inFile, output, stylesheets):
     filename = inFile[inFile.replace("\\","/").rfind("/")+1:inFile.rfind(".")]
-
+    print(output)
     with open(inFile, encoding='utf8') as (file):
         contents = file.readlines()
         outContent = createHTMLString(filename, contents, stylesheets)
 
         if not os.path.exists(output):
-            os.mkdir(output)
+            os.makedirs(output if output.endswith("/") else output + "/")
         
         outputFile = open(output + "/" + filename + ".html", "w", encoding="utf-8")
         outputFile.write(outContent)
@@ -23,8 +23,8 @@ def generateFromDirectory(inDir, output, stylesheets):
     for root, dirs, files in os.walk(inDir):
         for file in files:
             filepath = os.path.join(root, file)
-            outputPath = filepath[filepath.find('\\'):filepath.rfind('\\')].replace("\\","/")
-            generateFromFile(filepath, output + outputPath, stylesheets)
+            outputPath = filepath[filepath.find('\\'):filepath.rfind('\\')]
+            generateFromFile(filepath, (output + outputPath).replace("\\","/"), stylesheets)
             links.append("<a class=\"link\" href=\"{file}\">{title}</a>".format(file="." + outputPath + "/" + file[0:file.rfind('.')] + ".html", title=file[0:file.rfind('.')]))
     
     indexSkeleton = """
