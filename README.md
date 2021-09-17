@@ -7,6 +7,7 @@ Current version is 0.1.0
 
 ### Installation
 Make sure you have installed Python version 3.8.5 or above. No other dependencies is currently needed.
+
 To clone this project, use:
 ```console
 git clone https://github.com/lmpham1/cool_ssg_generator.git
