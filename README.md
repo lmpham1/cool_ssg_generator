@@ -14,7 +14,7 @@ git clone https://github.com/lmpham1/cool_ssg_generator.git
 ```
 
 #### For Anaconda users (optional)
-To quickly set up a virtual development environment with Anaconda, use the following commands in the project's root folder:
+If you want to quickly set up a virtual development environment with Anaconda, use the following commands in the project's root folder:
 ```console
 conda env create -f environment.yml
 conda activate ssg_env
