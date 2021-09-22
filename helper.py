@@ -62,12 +62,18 @@ def generateFromDirectory(inDir, output, stylesheets):
     outputFile = open(output + "/index.html", "w", encoding="utf-8")
     outputFile.write(indexHTMLContents)
     outputFile.close()
-    
+
+# Create HTML from markdown file
 def createMarkdownString(filename, contents, stylesheets):
-    html = createHTMLString(filename, contents, stylesheets)
-    html = re.sub('\*\*([^\ \*.]{1}.*?)\*\*', r'<strong>\1</strong>', html)
-    html = re.sub('\*([^\ \*.]{1}.*?)\*', r'<em>\1</em>', html)
-    return html
+    # Create title, paragraphs, and stylesheet first, like normal
+    htmlContent = createHTMLString(filename, contents, stylesheets)
+    
+    # Parse markdown
+    htmlContent = re.sub('\*\*([^\ \*.]{1}.*?)\*\*', r'<strong>\1</strong>', htmlContent)
+    htmlContent = re.sub('\*([^\ \*.]{1}.*?)\*', r'<em>\1</em>', htmlContent)
+    htmlContent = re.sub('\[(.+)\]\((.+)\)', r'<a href="\2">\1</a>', htmlContent)
+    
+    return htmlContent
 
 # Create HTML mark up and append the content
 # return the complete HTML mark up for a page
