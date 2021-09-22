@@ -63,8 +63,17 @@ def generateFromDirectory(inDir, output, stylesheets):
     outputFile.close()
     
 def createMarkdownString(filename, contents, stylesheets):
+    index = 0
     title = filename
     
+    while index < len(contents):
+        contents[index] = contents[index].strip()
+        if index == 0 and len(contents[index]) != 0 and len(contents[index+1].strip()) == 0 and len(contents[index+2].strip()) == 0:
+            title = contents[0]
+            contents[0] = "<h1>" + contents[0] + "</h1>\n"
+            index = 3
+        index+=1
+        
     htmlSkeleton= """
         <!doctype html>
         <html lang="en">
