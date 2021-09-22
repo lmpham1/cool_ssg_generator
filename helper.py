@@ -5,17 +5,18 @@ import shutil
 def generateFromFile(inFile, output, stylesheets):
     filename = inFile[inFile.replace("\\","/").rfind("/")+1:inFile.rfind(".")]
     print(output)
-    with open(inFile, encoding='utf8') as (file):
-        contents = file.readlines()
-        outContent = createHTMLString(filename, contents, stylesheets)
+    if(inFile.endswith(".txt")):
+        with open(inFile, encoding='utf8') as (file):
+            contents = file.readlines()
+            outContent = createHTMLString(filename, contents, stylesheets)
 
-        if not os.path.exists(output):
-            os.makedirs(output if output.endswith("/") else output + "/")
-        
-        outputFile = open(output + "/" + filename + ".html", "w", encoding="utf-8")
-        outputFile.write(outContent)
-        outputFile.close()
-        print("\"" + filename + ".html\" generated successfully!")
+            if not os.path.exists(output):
+                os.makedirs(output if output.endswith("/") else output + "/")
+            
+            outputFile = open(output + "/" + filename + ".html", "w", encoding="utf-8")
+            outputFile.write(outContent)
+            outputFile.close()
+            print("\"" + filename + ".html\" generated successfully!")
 
 # Generate HTML files with the same structure as the input folder, and export to output folder
 def generateFromDirectory(inDir, output, stylesheets):
