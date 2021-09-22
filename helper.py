@@ -5,18 +5,23 @@ import shutil
 def generateFromFile(inFile, output, stylesheets):
     filename = inFile[inFile.replace("\\","/").rfind("/")+1:inFile.rfind(".")]
     print(output)
-    if(inFile.endswith(".txt")):
-        with open(inFile, encoding='utf8') as (file):
-            contents = file.readlines()
+    
+    with open(inFile, encoding='utf8') as (file):
+        contents = file.readlines()
+        
+        if(inFile.endswith(".txt")):
             outContent = createHTMLString(filename, contents, stylesheets)
-
-            if not os.path.exists(output):
-                os.makedirs(output if output.endswith("/") else output + "/")
-            
-            outputFile = open(output + "/" + filename + ".html", "w", encoding="utf-8")
-            outputFile.write(outContent)
-            outputFile.close()
-            print("\"" + filename + ".html\" generated successfully!")
+        elif(inFile.endswith(".md")):
+            outContent = createMarkdownString(filename, contents, stylesheets)
+    
+        if not os.path.exists(output):
+            os.makedirs(output if output.endswith("/") else output + "/")
+        
+        outputFile = open(output + "/" + filename + ".html", "w", encoding="utf-8")
+        outputFile.write(outContent)
+        outputFile.close()
+        print("\"" + filename + ".html\" generated successfully!")
+        
 
 # Generate HTML files with the same structure as the input folder, and export to output folder
 def generateFromDirectory(inDir, output, stylesheets):
@@ -56,6 +61,34 @@ def generateFromDirectory(inDir, output, stylesheets):
     outputFile = open(output + "/index.html", "w", encoding="utf-8")
     outputFile.write(indexHTMLContents)
     outputFile.close()
+    
+def createMarkdownString(filename, contents, stylesheets):
+    title = filename
+    
+    htmlSkeleton= """
+        <!doctype html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <title>{title}</title>
+                <link rel="stylesheet" href="public/stylesheet/default.css">
+                {stylesheets}
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+            </head>
+            <body>
+            {contents}
+            </body>
+        </html>    
+    """
+
+    styleHTML = ""
+    if stylesheets is not None:
+        for stylesheet in stylesheets:
+            styleHTML += "<link rel=\"stylesheet\" href={}>\n".format(stylesheet)
+    
+    transformedContent = ''.join(contents)    
+
+    return htmlSkeleton.format(title=title, contents=transformedContent, stylesheets=styleHTML)
 
 # Create HTML mark up and append the content
 # return the complete HTML mark up for a page
