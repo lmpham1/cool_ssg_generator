@@ -1,5 +1,6 @@
 import os
 import shutil
+import re
 
 # Generate HTML file from inFile, and export to output folder
 def generateFromFile(inFile, output, stylesheets):
@@ -63,41 +64,10 @@ def generateFromDirectory(inDir, output, stylesheets):
     outputFile.close()
     
 def createMarkdownString(filename, contents, stylesheets):
-    index = 0
-    title = filename
-    
-    while index < len(contents):
-        contents[index] = contents[index].strip()
-        if index == 0 and len(contents[index]) != 0 and len(contents[index+1].strip()) == 0 and len(contents[index+2].strip()) == 0:
-            title = contents[0]
-            contents[0] = "<h1>" + contents[0] + "</h1>\n"
-            index = 3
-        index+=1
-        
-    htmlSkeleton= """
-        <!doctype html>
-        <html lang="en">
-            <head>
-                <meta charset="utf-8">
-                <title>{title}</title>
-                <link rel="stylesheet" href="public/stylesheet/default.css">
-                {stylesheets}
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-            </head>
-            <body>
-            {contents}
-            </body>
-        </html>    
-    """
-
-    styleHTML = ""
-    if stylesheets is not None:
-        for stylesheet in stylesheets:
-            styleHTML += "<link rel=\"stylesheet\" href={}>\n".format(stylesheet)
-    
-    transformedContent = ''.join(contents)    
-
-    return htmlSkeleton.format(title=title, contents=transformedContent, stylesheets=styleHTML)
+    html = createHTMLString(filename, contents, stylesheets)
+    html = re.sub('\*\*([^\ \*.]{1}.*?)\*\*', r'<strong>\1</strong>', html)
+    html = re.sub('\*([^\ \*.]{1}.*?)\*', r'<em>\1</em>', html)
+    return html
 
 # Create HTML mark up and append the content
 # return the complete HTML mark up for a page
