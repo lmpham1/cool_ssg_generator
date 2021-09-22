@@ -1,3 +1,4 @@
+
 # cool_ssg_generator
 A simple SSG generator made with Python.
 Current version is 0.1.0
@@ -42,6 +43,9 @@ For more usage, please refer to:
 ```console
 python main.py -h
 ```
+
+### Features
+* Markdown (.md files) support for **bold** (**), *italics* (*), and [links](https://github.com/lmpham1/cool_ssg_generator).
 
 ### License
 [MIT](LICENSE)
