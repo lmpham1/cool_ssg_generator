@@ -69,8 +69,8 @@ def createMarkdownString(filename, contents, stylesheets):
     htmlContent = createHTMLString(filename, contents, stylesheets)
     
     # Parse markdown
-    htmlContent = re.sub('\*\*([^\ \*.]{1}.*?)\*\*', r'<strong>\1</strong>', htmlContent)
-    htmlContent = re.sub('\*([^\ \*.]{1}.*?)\*', r'<em>\1</em>', htmlContent)
+    htmlContent = re.sub('\*\*([^\s\*.]{1}.*?)\*\*|__([^\s_.]{1}.*?)__', r'<strong>\1\2</strong>', htmlContent)
+    htmlContent = re.sub('\*([^\s\*.]{1}.*?)\*|_([^\s\_.]{1}.*?)_', r'<em>\1\2</em>', htmlContent)
     htmlContent = re.sub('\[(.+)\]\((.+)\)', r'<a href="\2">\1</a>', htmlContent)
     
     return htmlContent
