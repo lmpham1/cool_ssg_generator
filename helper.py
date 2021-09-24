@@ -85,14 +85,12 @@ def createHTMLString(filename, contents, stylesheets):
         contents[index] = contents[index].strip()
         if index == 0 and len(contents[index]) != 0 and len(contents[index+1].strip()) == 0 and len(contents[index+2].strip()) == 0:
             title = contents[0]
-            contents[0] = "<h1>" + contents[0] + "</h1>\n<p>"
+            contents[0] = "<h1>" + contents[0] + "</h1>\n\n<p>"
             index = 3
         elif index == 0:
             contents[index] = "<p>" + contents[index]
         if len(contents[index]) == 0:
-            contents[index] = """</p>
-                <p>
-            """
+            contents[index] = "</p>\n\n<p>"
         index+=1
 
     htmlSkeleton= """
@@ -122,12 +120,5 @@ def createHTMLString(filename, contents, stylesheets):
 
 # emptying old output folder
 def emptyFolder():
-    output = './dist'
-    if os.path.exists(output):
-        for root, dirs, files in os.walk('./dist'):
-            for f in files:
-                os.unlink(os.path.join(root, f))
-            for d in dirs:
-                shutil.rmtree(os.path.join(root, d))
-        os.rmdir('./dist')
+    shutil.rmtree('./dist')
     os.mkdir('./dist')
