@@ -44,8 +44,12 @@ For more usage, please refer to:
 python main.py -h
 ```
 
-### Features
-* Markdown (.md files) support for **bold** (**), *italics* (*), and [links](https://github.com/lmpham1/cool_ssg_generator).
+### Cool Features
+* Support multiple stylesheets! Simply use the `-s` or `--stylesheet` flags and separate each stylesheet link with space `' '`, i.e.:
+```console
+python main.py -i index.txt -s sheet1.css sheet2.css sheet3.css
+```
+* Markdown (.md files) support for **bold** (`**example**` or `__example__`), *italics* (`*example*` or `_example_`), and [links](https://github.com/lmpham1/cool_ssg_generator) (`[Example](www.example.com)`).
 
 ### License
 [MIT](LICENSE)
