@@ -15,7 +15,7 @@ def main():
     
     #check if output is specified
     if args.output is None:
-        output = "./dist"
+        output = os.path.join('.', 'dist')
         helper.emptyFolder()
     elif os.path.exists(args.output[0]):
         output = args.output[0]
