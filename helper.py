@@ -1,22 +1,28 @@
 import os
 import shutil
+import re
 
 # Generate HTML file from inFile, and export to output folder
 def generateFromFile(inFile, output, stylesheets):
     filename = inFile[inFile.replace("\\","/").rfind("/")+1:inFile.rfind(".")]
     print(output)
-    if(inFile.endswith(".txt")):
-        with open(inFile, encoding='utf8') as (file):
-            contents = file.readlines()
+    
+    with open(inFile, encoding='utf8') as (file):
+        contents = file.readlines()
+        
+        if(inFile.endswith(".txt")):
             outContent = createHTMLString(filename, contents, stylesheets)
-
-            if not os.path.exists(output):
-                os.makedirs(output if output.endswith("/") else output + "/")
-            
-            outputFile = open(output + "/" + filename + ".html", "w", encoding="utf-8")
-            outputFile.write(outContent)
-            outputFile.close()
-            print("\"" + filename + ".html\" generated successfully!")
+        elif(inFile.endswith(".md")):
+            outContent = createMarkdownString(filename, contents, stylesheets)
+    
+        if not os.path.exists(output):
+            os.makedirs(output if output.endswith("/") else output + "/")
+        
+        outputFile = open(output + "/" + filename + ".html", "w", encoding="utf-8")
+        outputFile.write(outContent)
+        outputFile.close()
+        print("\"" + filename + ".html\" generated successfully!")
+        
 
 # Generate HTML files with the same structure as the input folder, and export to output folder
 def generateFromDirectory(inDir, output, stylesheets):
@@ -56,6 +62,18 @@ def generateFromDirectory(inDir, output, stylesheets):
     outputFile = open(output + "/index.html", "w", encoding="utf-8")
     outputFile.write(indexHTMLContents)
     outputFile.close()
+
+# Create HTML from markdown file
+def createMarkdownString(filename, contents, stylesheets):
+    # Create title, paragraphs, and stylesheet first, like normal
+    htmlContent = createHTMLString(filename, contents, stylesheets)
+    
+    # Parse markdown
+    htmlContent = re.sub('\*\*([^\s\*.]{1}.*?)\*\*|__([^\s_.]{1}.*?)__', r'<strong>\1\2</strong>', htmlContent)
+    htmlContent = re.sub('\*([^\s\*.]{1}.*?)\*|_([^\s\_.]{1}.*?)_', r'<em>\1\2</em>', htmlContent)
+    htmlContent = re.sub('\[(.+)\]\((.+)\)', r'<a href="\2">\1</a>', htmlContent)
+    
+    return htmlContent
 
 # Create HTML mark up and append the content
 # return the complete HTML mark up for a page
