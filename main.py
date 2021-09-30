@@ -12,6 +12,7 @@ def main():
         sys.exit(1)
 
     stylesheets = args.stylesheet
+    lang = args.lang[0] if args.lang[0] is not None else 'en-CA'
     
     #check if output is specified
     if args.output is None:
@@ -26,9 +27,9 @@ def main():
     #check if input is a file or a directory
     for item in input:
         if os.path.isdir(item):
-            helper.generateFromDirectory(item, output, stylesheets)
+            helper.generateFromDirectory(item, output, stylesheets, lang)
         elif os.path.isfile(item):
-            helper.generateFromFile(item, output, stylesheets)
+            helper.generateFromFile(item, output, stylesheets, lang)
         else:
             print("ERROR: Could not find input file/folder")
     
@@ -42,6 +43,7 @@ def parseArguments():
     parser.add_argument('-i', '--input', nargs='+', help='path to input file or directory', required=True)
     parser.add_argument('-o', '--output', nargs=1, help='path to output directory')
     parser.add_argument('-s', '--stylesheet', nargs='+', help='attach stylesheet URL')
+    parser.add_argument('-l', '--lang', nargs=1, help='language of the generated documents, default is en-CA')
     args = parser.parse_args()
     return args
 

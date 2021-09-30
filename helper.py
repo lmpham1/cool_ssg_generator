@@ -3,16 +3,16 @@ import shutil
 import re
 
 # Generate HTML file from inFile, and export to output folder
-def generateFromFile(inFile, output, stylesheets):
+def generateFromFile(inFile, output, stylesheets, lang):
     filename = re.search('(?!(\\|\/))[^\/\\\.]*(?=\.[A-Za-z0-9]+$)', inFile)[0]
     
     with open(inFile, encoding='utf8') as (file):
         contents = ''.join(file.readlines())
         
         if(inFile.endswith(".txt")):
-            outContent = createHTMLString(filename, contents, stylesheets)
+            outContent = createHTMLString(filename, contents, stylesheets, lang)
         elif(inFile.endswith(".md")):
-            outContent = createMarkdownString(filename, contents, stylesheets)
+            outContent = createMarkdownString(filename, contents, stylesheets, lang)
     
         if not os.path.exists(output):
             os.makedirs(output)
@@ -24,7 +24,7 @@ def generateFromFile(inFile, output, stylesheets):
         
 
 # Generate HTML files with the same structure as the input folder, and export to output folder
-def generateFromDirectory(inDir, output, stylesheets):
+def generateFromDirectory(inDir, output, stylesheets, lang):
     links = []
     for root, dirs, files in os.walk(inDir):
         for file in files:
@@ -32,11 +32,11 @@ def generateFromDirectory(inDir, output, stylesheets):
             getFileSubfolder = re.search(r'(?<=\\|\/)(.*)(?=\\|\/[^\\\/]+)', filepath)
             outputPath = "" if getFileSubfolder is None else getFileSubfolder.group(1)
             
-            generateFromFile(filepath, os.path.join(output, outputPath), stylesheets)
+            generateFromFile(filepath, os.path.join(output, outputPath), stylesheets, lang)
             links.append("<a class=\"link\" href=\"{file}\">{title}</a>".format(file=os.path.join(".", outputPath, file[0:file.rfind('.')] + ".html"), title=file[0:file.rfind('.')]))
     
     indexSkeleton = """<!doctype html>
-<html lang="en">
+<html lang="{lang}">
     <head>
         <meta charset="utf-8">
         <title>{title}</title>
@@ -55,34 +55,35 @@ def generateFromDirectory(inDir, output, stylesheets):
     styleHTML = ""
     if stylesheets is not None:
         for stylesheet in stylesheets:
-            styleHTML += "<link rel=\"stylesheet\" href={}>\n".format(stylesheet)
+            styleHTML += "<link rel=\"stylesheet\" href=\"{}\">\n".format(stylesheet)
     
     indexTitle = inDir.split('\\')[-1] if inDir.split('\\')[-1] != '' else inDir.split('\\')[-2]
 
-    indexHTMLContents = indexSkeleton.format(stylesheets=styleHTML, contents='\n'.join(links), title=indexTitle if indexTitle != '' and indexTitle is not None else "Index Page")
+    indexHTMLContents = indexSkeleton.format(stylesheets=styleHTML, contents='\n'.join(links), title=indexTitle if indexTitle != '' and indexTitle is not None else "Index Page", lang=lang)
 
     outputFile = open(output + "/index.html", "w", encoding="utf-8")
     outputFile.write(indexHTMLContents)
     outputFile.close()
 
 # Create HTML from markdown file
-def createMarkdownString(filename, contents, stylesheets):
+def createMarkdownString(filename, contents, stylesheets, lang):
     # Create title, paragraphs, and stylesheet first, like normal
-    htmlContent = createHTMLString(filename, contents, stylesheets)
+    htmlContent = createHTMLString(filename, contents, stylesheets, lang)
     
     # Parse markdown
     htmlContent = re.sub('\*\*([^\s\*.]{1}.*?)\*\*|__([^\s_.]{1}.*?)__', r'<strong>\1\2</strong>', htmlContent)
     htmlContent = re.sub('\*([^\s\*.]{1}.*?)\*|_([^\s\_.]{1}.*?)_', r'<em>\1\2</em>', htmlContent)
     htmlContent = re.sub('\[(.+)\]\((.+)\)', r'<a href="\2">\1</a>', htmlContent)
     
-    blockQuoteParser = lambda matchedContent: "<blockquote>\n{}\n</blockquote>".format(re.sub("<\/?p>", "", matchedContent.group(1)))
-    htmlContent = re.sub(r'```\r?\n(((?!```)[\s\S])+)```', blockQuoteParser, htmlContent)
+    # Blockquote - Not Working Yet
+    # blockQuoteParser = lambda matchedContent: "<blockquote>\n{}\n</blockquote>".format(re.sub("<\/?p>", "", matchedContent.group(1)))
+    # htmlContent = re.sub(r'```\r?\n(((?!```)[\s\S])+)```', blockQuoteParser, htmlContent)
 
     return htmlContent
 
 # Create HTML mark up and append the content
 # return the complete HTML mark up for a page
-def createHTMLString(filename, contents, stylesheets):
+def createHTMLString(filename, contents, stylesheets, lang):
     index = 0
     title = filename
 
@@ -94,7 +95,7 @@ def createHTMLString(filename, contents, stylesheets):
     contents = contents.replace("\n\n", "</p>\n\n<p>")
 
     htmlSkeleton= """<!doctype html>
-<html lang="en">
+<html lang="{lang}">
     <head>
         <meta charset="utf-8">
         <title>{title}</title>
@@ -111,9 +112,9 @@ def createHTMLString(filename, contents, stylesheets):
     styleHTML = ""
     if stylesheets is not None:
         for stylesheet in stylesheets:
-            styleHTML += "<link rel=\"stylesheet\" href={}>\n".format(stylesheet) 
+            styleHTML += "<link rel=\"stylesheet\" href=\"{}\">\n".format(stylesheet) 
 
-    return htmlSkeleton.format(title=title, contents=contents, stylesheets=styleHTML)
+    return htmlSkeleton.format(title=title, contents=contents, stylesheets=styleHTML, lang=lang)
 
 # emptying old output folder
 def emptyFolder():
