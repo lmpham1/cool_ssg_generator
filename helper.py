@@ -75,6 +75,9 @@ def createMarkdownString(filename, contents, stylesheets):
     htmlContent = re.sub('\*([^\s\*.]{1}.*?)\*|_([^\s\_.]{1}.*?)_', r'<em>\1\2</em>', htmlContent)
     htmlContent = re.sub('\[(.+)\]\((.+)\)', r'<a href="\2">\1</a>', htmlContent)
     
+    blockQuoteParser = lambda matchedContent: "<blockquote>\n{}\n</blockquote>".format(re.sub("<\/?p>", "", matchedContent.group(1)))
+    htmlContent = re.sub(r'```\r?\n(((?!```)[\s\S])+)```', blockQuoteParser, htmlContent)
+
     return htmlContent
 
 # Create HTML mark up and append the content
