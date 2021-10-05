@@ -12,7 +12,7 @@ def main():
         sys.exit(1)
 
     stylesheets = args.stylesheet
-    lang = args.lang[0] if args.lang[0] is not None else 'en-CA'
+    lang = 'en-CA' if args.lang is None else args.lang[0]
     
     #check if output is specified
     if args.output is None:
