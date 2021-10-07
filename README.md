@@ -13,6 +13,10 @@ To clone this project, use:
 ```console
 git clone https://github.com/lmpham1/cool_ssg_generator.git
 ```
+Then, you'll probably want to navigate to the project's root folder:
+```console
+cd cool_ssg_generator
+```
 
 #### For Anaconda users (optional)
 If you want to quickly set up a virtual development environment with Anaconda, use the following commands in the project's root folder:
@@ -23,7 +27,7 @@ conda activate ssg_env
 For more information on Anaconda, please refer to their [official documentation](https://docs.anaconda.com/)
 
 ### Basic Usage
-Navigate to the project folder:
+Navigate to the project folder (if you haven't done so already):
 ```console
 cd cool_ssg_generator
 ```
