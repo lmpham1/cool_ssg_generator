@@ -26,6 +26,8 @@ conda activate ssg_env
 ```
 For more information on Anaconda, please refer to their [official documentation](https://docs.anaconda.com/)
 
+---
+
 ### Basic Usage
 Navigate to the project folder (if you haven't done so already):
 ```console
@@ -47,6 +49,7 @@ For more usage, please refer to:
 ```console
 python main.py -h
 ```
+---
 
 ### Cool Features
 Wanna know what make the `cool_ssg_generator` so cool? Aside from the totally-intentional doubled 'generator' in the name, it offers the following awesome features:
@@ -65,6 +68,8 @@ python main.py -i test.txt -l en-UK
 python main.py -c config.json
 ```
 **Note**: Using `--config`/`-c` option will ignore/override other options
+
+---
 
 ### License
 [MIT](LICENSE)
