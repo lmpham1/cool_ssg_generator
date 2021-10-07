@@ -12,7 +12,7 @@ def main():
 
     # if config file exists, overwrite all args
     if config:
-        if os.path.exists(config):
+        if os.path.exists(config) and config.endswith(".json"):
             loadedConfig = json.load(open(config, "r"))
             if "input" in loadedConfig:
                 args.input = [loadedConfig["input"]]
