@@ -55,12 +55,12 @@ python main.py -i index.txt -s sheet1.css sheet2.css sheet3.css
 ```
 python main.py -i test.txt -l en-UK
 ```
-  * **Note**: No validation for `--lang` option is implemented yet. See issue [#14](https://github.com/lmpham1/cool_ssg_generator/issues/14) for more information
+**Note**: No validation for `--lang`/`-l` option is implemented yet. See issue [#14](https://github.com/lmpham1/cool_ssg_generator/issues/14) for more information
 * You can save your command-line options in a config file! No need to manually type all the options everytime, just use `--config`/`-c` flag with a json file:
 ```
 python main.py -c config.json
 ```
-  * **Note**: Using this option will ignore/override other options
+**Note**: Using `--config`/`-c` option will ignore/override other options
 
 ### License
 [MIT](LICENSE)
