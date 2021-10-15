@@ -1,5 +1,5 @@
 import argparse
-import utils.config_util as config_util
+from utils import config_util
 
 def parse_arguments():
     parser = argparse.ArgumentParser(

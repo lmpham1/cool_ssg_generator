@@ -1,8 +1,8 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
-import utils.html_generator_util as html_generator_util
-import utils.arguments_util as arguments_util
+from utils import html_generator_util
+from utils import arguments_util
 
 
 def main():
