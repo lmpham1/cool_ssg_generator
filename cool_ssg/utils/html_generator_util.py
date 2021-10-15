@@ -2,26 +2,32 @@ import shutil
 import re
 from pathlib import Path
 
+# To add new supported file type, simply add to this list
+ACCEPTED_FILES = [".txt", ".md"]
+
 # Generate HTML file from filepath, and export to output folder
 def generate_from_file(filepath, output, options):
     # extract file name without extension
     filename = Path(filepath).stem
 
-    with open(filepath, encoding='utf8') as (file):
-        contents = ''.join(file.readlines())
-        output_filepath = Path(output).joinpath(filename + ".html")
+    if Path(filepath).suffix in ACCEPTED_FILES:
+        with open(filepath, encoding='utf8') as (file):
+            contents = ''.join(file.readlines())
+            output_filepath = Path(output).joinpath(filename + ".html")
 
-        out_content = create_html_string(filename, contents, output_filepath, options)
+            out_content = create_html_string(filename, contents, output_filepath, options)
+            
+            if(filepath.name.endswith(".md")):
+                out_content = process_markdown(out_content)
         
-        if(filepath.name.endswith(".md")):
-            out_content = process_markdown(out_content)
-    
-        output.mkdir(parents=True, exist_ok=True)
+            output.mkdir(parents=True, exist_ok=True)
 
-        output_file = open(output_filepath, "w", encoding="utf-8")
-        output_file.write(out_content)
-        output_file.close()
-        print("\"" + filename + ".html\" generated successfully!")
+            output_file = open(output_filepath, "w", encoding="utf-8")
+            output_file.write(out_content)
+            output_file.close()
+            print("\"" + filename + ".html\" generated successfully!")
+            return output_filepath
+    return None
         
 
 # Generate HTML files with the same structure as the input folder, and export to output folder
@@ -30,8 +36,9 @@ def generate_from_directory(input_dir, output, options):
     for filepath in Path(input_dir).rglob("*.*"):
         title = Path(filepath).stem
         output_path = Path(output).joinpath(Path(filepath).parents[0].relative_to(input_dir))
-        generate_from_file(filepath, output_path, options)
-        links.append("<a class=\"list-item\" href=\"{file}\"><li class=\"link\">{title}</li></a>".format(file=output_path.joinpath(title + ".html").relative_to(output), title=title))
+        generated_filepath = generate_from_file(filepath, output_path, options)
+        if generated_filepath:
+            links.append("<a class=\"list-item\" href=\"{file}\"><li class=\"link\">{title}</li></a>".format(file=generated_filepath.relative_to(output), title=title))
     
     index_skeleton = """<!doctype html>
 <html lang="{lang}">
