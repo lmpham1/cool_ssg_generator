@@ -3,37 +3,37 @@ import re
 from pathlib import Path
 
 # Generate HTML file from filepath, and export to output folder
-def generateFromFile(filepath, output, options):
+def generate_from_file(filepath, output, options):
     # extract file name without extension
     filename = Path(filepath).stem
 
     with open(filepath, encoding='utf8') as (file):
         contents = ''.join(file.readlines())
-        outputFilePath = Path(output).joinpath(filename + ".html")
+        output_filepath = Path(output).joinpath(filename + ".html")
 
-        outContent = createHTMLString(filename, contents, outputFilePath, options)
+        out_content = create_html_string(filename, contents, output_filepath, options)
         
         if(filepath.name.endswith(".md")):
-            outContent = processMarkdown(outContent)
+            out_content = process_markdown(out_content)
     
         output.mkdir(parents=True, exist_ok=True)
 
-        outputFile = open(outputFilePath, "w", encoding="utf-8")
-        outputFile.write(outContent)
-        outputFile.close()
+        output_file = open(output_filepath, "w", encoding="utf-8")
+        output_file.write(out_content)
+        output_file.close()
         print("\"" + filename + ".html\" generated successfully!")
         
 
 # Generate HTML files with the same structure as the input folder, and export to output folder
-def generateFromDirectory(inDir, output, options):
+def generate_from_directory(input_dir, output, options):
     links = []
-    for filepath in Path(inDir).rglob("*.*"):
+    for filepath in Path(input_dir).rglob("*.*"):
         title = Path(filepath).stem
-        outputPath = Path(output).joinpath(Path(filepath).parents[0].relative_to(inDir))
-        generateFromFile(filepath, outputPath, options)
-        links.append("<a class=\"list-item\" href=\"{file}\"><li class=\"link\">{title}</li></a>".format(file=outputPath.joinpath(title + ".html").relative_to(output), title=title))
+        output_path = Path(output).joinpath(Path(filepath).parents[0].relative_to(input_dir))
+        generate_from_file(filepath, output_path, options)
+        links.append("<a class=\"list-item\" href=\"{file}\"><li class=\"link\">{title}</li></a>".format(file=output_path.joinpath(title + ".html").relative_to(output), title=title))
     
-    indexSkeleton = """<!doctype html>
+    index_skeleton = """<!doctype html>
 <html lang="{lang}">
     <head>
         <meta charset="utf-8">
@@ -49,35 +49,32 @@ def generateFromDirectory(inDir, output, options):
     </body>
 </html>"""
 
-    styleHTML = ""
+    style_html = ""
     if options["stylesheets"] is not None:
         for stylesheet in options["stylesheets"]:
-            styleHTML += "<link rel=\"stylesheet\" href=\"{}\">\n".format(stylesheet)
+            style_html += "<link rel=\"stylesheet\" href=\"{}\">\n".format(stylesheet)
     
-    indexTitle = Path(inDir).name
+    index_title = Path(input_dir).name
 
-    indexHTMLContents = indexSkeleton.format(stylesheets=styleHTML, contents='\n'.join(links), title=indexTitle if indexTitle != '' and indexTitle is not None else "Index Page", lang=options["lang"])
+    index_html_content = index_skeleton.format(stylesheets=style_html, contents='\n'.join(links), title=index_title if index_title != '' and index_title is not None else "Index Page", lang=options["lang"])
 
-    outputFile = open(Path(output).joinpath("index.html"), "w", encoding="utf-8")
-    outputFile.write(indexHTMLContents)
-    outputFile.close()
+    output_file = open(Path(output).joinpath("index.html"), "w", encoding="utf-8")
+    output_file.write(index_html_content)
+    output_file.close()
 
 # Create HTML from markdown file
-def processMarkdown(htmlContent):
-    
+def process_markdown(html_content):
     # Parse markdown
-    htmlContent = re.sub('\*\*([^\s\*.]{1}.*?)\*\*|__([^\s_.]{1}.*?)__', r'<strong>\1\2</strong>', htmlContent)
-    htmlContent = re.sub('\*([^\s\*.]{1}.*?)\*|_([^\s\_.]{1}.*?)_', r'<em>\1\2</em>', htmlContent)
-    htmlContent = re.sub('\[(.+)\]\((.+)\)', r'<a href="\2">\1</a>', htmlContent)
-    htmlContent = re.sub('(\n|(\n<p>))\s{0,3}((---)|(\*\*\*))\s{0,3}((</p>\n)|\n)', r'\n<hr/>\n', htmlContent)
-    # blockQuoteParser = lambda matchedContent: "<blockquote>\n{}\n</blockquote>".format(re.sub("<\/?p>", "", matchedContent.group(1)))
-    # htmlContent = re.sub(r'```\r?\n(((?!```)[\s\S])+)```', blockQuoteParser, htmlContent)
+    html_content = re.sub('\*\*([^\s\*.]{1}.*?)\*\*|__([^\s_.]{1}.*?)__', r'<strong>\1\2</strong>', html_content)
+    html_content = re.sub('\*([^\s\*.]{1}.*?)\*|_([^\s\_.]{1}.*?)_', r'<em>\1\2</em>', html_content)
+    html_content = re.sub('\[(.+)\]\((.+)\)', r'<a href="\2">\1</a>', html_content)
+    html_content = re.sub('(\n|(\n<p>))\s{0,3}((---)|(\*\*\*))\s{0,3}((</p>\n)|\n)', r'\n<hr/>\n', html_content)
 
-    return htmlContent
+    return html_content
 
 # Create HTML mark up and append the content
 # return the complete HTML mark up for a page
-def createHTMLString(filename, contents, output, options):
+def create_html_string(filename, contents, output, options):
     title = filename
 
     if contents.split('\n\n\n', 1)[0] == contents.splitlines()[0]:
@@ -87,7 +84,7 @@ def createHTMLString(filename, contents, output, options):
     contents = "<p>" + contents + "</p>"
     contents = contents.replace("\n\n", "</p>\n\n<p>")
 
-    htmlSkeleton= """<!doctype html>
+    html_skeleton = """<!doctype html>
 <html lang="{lang}">
     <head>
         <meta charset="utf-8">
@@ -101,18 +98,18 @@ def createHTMLString(filename, contents, output, options):
     </body>
 </html>"""
 
-    styleHTML = ""
+    style_html = ""
     if options["stylesheets"] is not None:
         for stylesheet in options["stylesheets"]:
             if isinstance(stylesheet, Path):
                 for part in range(0, len(output.parts) - 2):
                     stylesheet = Path("..").joinpath(stylesheet)
-            styleHTML += "<link rel=\"stylesheet\" href=\"{}\">\n".format(stylesheet)
+            style_html += "<link rel=\"stylesheet\" href=\"{}\">\n".format(stylesheet)
     
-    return htmlSkeleton.format(title=title, contents=contents, stylesheets=styleHTML, lang=options["lang"])
+    return html_skeleton.format(title=title, contents=contents, stylesheets=style_html, lang=options["lang"])
 
 # emptying old output folder
-def emptyFolder(dir):
+def empty_folder(dir):
     shutil.rmtree(dir)
     Path(dir).mkdir()
 

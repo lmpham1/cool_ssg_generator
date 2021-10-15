@@ -1,7 +1,7 @@
 import argparse
 import utils.config_util as config_util
 
-def parseArguments():
+def parse_arguments():
     parser = argparse.ArgumentParser(
         description="Generate HTML website from raw data")
     

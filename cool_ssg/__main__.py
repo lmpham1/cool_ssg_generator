@@ -6,7 +6,7 @@ import utils.arguments_util as arguments_util
 
 
 def main():
-    options = arguments_util.parseArguments()
+    options = arguments_util.parse_arguments()
 
     input = options["input"]
     output = options["output"] 
@@ -18,7 +18,7 @@ def main():
     # check if output is specified
     if output is None:
         output = Path('.').joinpath('dist')
-        html_generator_util.emptyFolder(output)
+        html_generator_util.empty_folder(output)
     elif not Path(output).exists():
         print("ERROR: Could not find output folder")
         sys.exit(1)
@@ -28,10 +28,10 @@ def main():
     # check if input is a file or a directory
     for item in input:
         if Path(item).is_dir():
-            html_generator_util.generateFromDirectory(item, output, options)
+            html_generator_util.generate_from_directory(item, output, options)
         elif Path(item).is_file():
             # print(item, output, stylesheets, lang)
-            html_generator_util.generateFromFile(item, output, options)
+            html_generator_util.generate_from_file(item, output, options)
         else:
             print("ERROR: Could not find input file/folder")
 
