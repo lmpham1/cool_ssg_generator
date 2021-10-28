@@ -18,11 +18,11 @@ def main():
     # check if output is specified
     if output is None:
         output = Path('.').joinpath('dist')
-        html_generator_util.empty_folder(output)
     elif not Path(output).exists():
         print("ERROR: Could not find output folder")
         sys.exit(1)
 
+    html_generator_util.empty_folder(output)
     options["stylesheets"] = html_generator_util.generate_stylesheets(options["stylesheets"], output)
 
     # check if input is a file or a directory

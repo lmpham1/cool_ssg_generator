@@ -34,11 +34,10 @@ def generate_from_file(filepath, output, options):
 def generate_from_directory(input_dir, output, options):
     links = []
     for filepath in Path(input_dir).rglob("*.*"):
-        title = Path(filepath).stem
         output_path = Path(output).joinpath(Path(filepath).parents[0].relative_to(input_dir))
         generated_filepath = generate_from_file(filepath, output_path, options)
         if generated_filepath:
-            links.append("<a class=\"list-item\" href=\"{file}\"><li class=\"link\">{title}</li></a>".format(file=generated_filepath.relative_to(output), title=title))
+            links.append("<a class=\"list-item\" href=\"{file}\"><li class=\"link\">{title}</li></a>".format(file=generated_filepath.relative_to(output), title=generated_filepath.relative_to(output).stem))
     
     index_skeleton = """<!doctype html>
 <html lang="{lang}">
