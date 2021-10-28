@@ -17,3 +17,8 @@ def get_config(config_path, options):
 
     print("ERROR: Could not find config file")
     sys.exit(1)
+
+def get_sidebar_config(config_path, options):
+    if Path(config_path).exists() and config_path.endswith(".json"):
+        loadedConfig = json.load(open(config_path, "r"))
+        options["sidebar"] = loadedConfig["sidebar"]

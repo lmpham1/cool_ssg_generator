@@ -6,7 +6,7 @@ from pathlib import Path
 ACCEPTED_FILES = [".txt", ".md"]
 
 # Generate HTML file from filepath, and export to output folder
-def generate_from_file(filepath, output, options):
+def generate_from_file(filepath, output, options, input_dir=None):
     # extract file name without extension
     filename = Path(filepath).stem
 
@@ -15,7 +15,7 @@ def generate_from_file(filepath, output, options):
             contents = ''.join(file.readlines())
             output_filepath = Path(output).joinpath(filename + ".html")
 
-            out_content = create_html_string(filename, contents, output_filepath, options)
+            out_content = create_html_string(filename, contents, output_filepath, options, input_dir)
             
             if(filepath.name.endswith(".md")):
                 out_content = process_markdown(out_content)
@@ -32,12 +32,12 @@ def generate_from_file(filepath, output, options):
 
 # Generate HTML files with the same structure as the input folder, and export to output folder
 def generate_from_directory(input_dir, output, options):
-    links = []
+    index_links = []
     for filepath in Path(input_dir).rglob("*.*"):
         output_path = Path(output).joinpath(Path(filepath).parents[0].relative_to(input_dir))
-        generated_filepath = generate_from_file(filepath, output_path, options)
+        generated_filepath = generate_from_file(filepath, output_path, options, input_dir)
         if generated_filepath:
-            links.append("<a class=\"list-item\" href=\"{file}\"><li class=\"link\">{title}</li></a>".format(file=generated_filepath.relative_to(output), title=generated_filepath.relative_to(output).stem))
+            index_links.append("<a class=\"list-item\" href=\"{file}\"><li class=\"link\">{title}</li></a>".format(file=generated_filepath.relative_to(output), title=generated_filepath.relative_to(output).stem))
     
     index_skeleton = """<!doctype html>
 <html lang="{lang}">
@@ -62,7 +62,7 @@ def generate_from_directory(input_dir, output, options):
     
     index_title = Path(input_dir).name
 
-    index_html_content = index_skeleton.format(stylesheets=style_html, contents='\n'.join(links), title=index_title if index_title != '' and index_title is not None else "Index Page", lang=options["lang"])
+    index_html_content = index_skeleton.format(stylesheets=style_html, contents='\n'.join(index_links), title=index_title if index_title != '' and index_title is not None else "Index Page", lang=options["lang"])
 
     output_file = open(Path(output).joinpath("index.html"), "w", encoding="utf-8")
     output_file.write(index_html_content)
@@ -80,7 +80,7 @@ def process_markdown(html_content):
 
 # Create HTML mark up and append the content
 # return the complete HTML mark up for a page
-def create_html_string(filename, contents, output, options):
+def create_html_string(filename, contents, output, options, input_dir=None):
     title = filename
 
     if contents.split('\n\n\n', 1)[0] == contents.splitlines()[0]:
@@ -99,8 +99,11 @@ def create_html_string(filename, contents, output, options):
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <h1>{title}</h1>
-        {contents}
+        {sidebar}
+        <div class=\"content-container\">
+            <h1>{title}</h1>
+            {contents}
+        </div>
     </body>
 </html>"""
 
@@ -112,7 +115,9 @@ def create_html_string(filename, contents, output, options):
                     stylesheet = Path("..").joinpath(stylesheet)
             style_html += "<link rel=\"stylesheet\" href=\"{}\">\n".format(stylesheet)
     
-    return html_skeleton.format(title=title, contents=contents, stylesheets=style_html, lang=options["lang"])
+    sidebar = generate_sidebar(input_dir, output, options["sidebar"])
+    
+    return html_skeleton.format(title=title, contents=contents, stylesheets=style_html, lang=options["lang"], sidebar=sidebar if sidebar else "")
 
 # emptying old output folder
 def empty_folder(dir):
@@ -142,3 +147,37 @@ def generate_stylesheets(stylesheets, output):
         stylesheet_paths.append(stylesheet_folder.joinpath(Path(default_stylesheet).name).relative_to(output))
     
     return stylesheet_paths
+
+def recurse_sidebar_map(input_dir, output):
+    links = []
+    for item in Path(input_dir).glob('*'):
+        itempath = Path(item)
+        if itempath.is_dir():
+            subfolder_links = recurse_sidebar_map(item, output)
+            if subfolder_links:
+                links.append("<li>\n" + itempath.name + "\n" + subfolder_links + "</li>")
+        elif Path(item).is_file() and Path(item).suffix in ACCEPTED_FILES:
+            itempath = itempath.with_suffix('.html').relative_to(itempath.parents[len(itempath.parents)-2])
+            for part in range(0, len(output.parts) - 2):
+                itempath = Path("..").joinpath(itempath)
+            links.append("<li><a href=\"{link}\">{title}</a></li>".format(link=itempath, title=itempath.stem))
+    if len(links) > 0:
+        return "<ul>\n{contents}\n</ul>\n".format(contents="\n".join(links)) 
+    else: 
+        return None
+
+def generate_sidebar(input_dir, output, sidebar_options):
+    if not sidebar_options:
+        return None
+    
+    sidebar_links = ""
+
+    if isinstance(sidebar_options, str):
+        sidebar_links = recurse_sidebar_map(input_dir, output)
+        print(sidebar_links)
+
+    elif isinstance(sidebar_options, dict):
+        pass
+    
+    return sidebar_links
+
