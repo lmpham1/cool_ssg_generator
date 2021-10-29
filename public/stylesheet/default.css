@@ -43,13 +43,62 @@ h1 {
     list-style-type:none;
     padding-inline-start: 0px;
 }
-body{
+
+html {
+    margin: 0px;
+    height: 100%;
+}
+
+.main-container{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.content-container{
     background-image: url(https://www.color-hex.com/palettes/61574.png);
     background-repeat: repeat;
     background-size: cover;
 }
 
-html {
-    margin: 0px;
-    height: 100%;
+.sidebar-container{
+    flex-basis: 100%;
+    margin: 5px;
+}
+
+.sidebar-container h2 {
+    text-align: center;
+}
+
+.sidebar-container ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style-type:none;
+    padding-inline-start: 0px;
+}
+
+.sidebar-container li{
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.6);
+    width: 80%;
+    margin: 8px;
+    padding: 10px;
+    text-align: left;
+    transition-duration: 500ms;
+}
+
+.sidebar-container a{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-decoration: none;
+    color: black;
+    transition-duration: 500ms;
+}
+
+.sidebar-container li:hover{
+    background-color: rgba(40, 40, 40, 0.8);
+    color: white;
+}
+
+.sidebar-container li:hover a{
+    color: white;
 }

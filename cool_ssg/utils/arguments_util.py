@@ -22,7 +22,7 @@ def parse_arguments():
     
     if args.sidebar:
         if args.sidebar != "use_default":
-            config_util.get_sidebar_config(args.sidebar)
+            config_util.get_sidebar_config(args.sidebar, options)
 
     # Assign default value for unspecified required options
     options["lang"] = "en-CA" if options["lang"] is None else options["lang"]

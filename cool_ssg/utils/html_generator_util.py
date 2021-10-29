@@ -99,10 +99,12 @@ def create_html_string(filename, contents, output, options, input_dir=None):
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        {sidebar}
-        <div class=\"content-container\">
-            <h1>{title}</h1>
-            {contents}
+        <div class=\"main-container\">
+            {sidebar}
+            <div class=\"content-container\">
+                <h1>{title}</h1>
+                {contents}
+            </div>
         </div>
     </body>
 </html>"""
@@ -170,14 +172,27 @@ def generate_sidebar(input_dir, output, sidebar_options):
     if not sidebar_options:
         return None
     
-    sidebar_links = ""
+    sidebar_html = "<div class=\"sidebar-container\">\n{}\n</div>\n"
+    sidebar_links = None
 
     if isinstance(sidebar_options, str):
         sidebar_links = recurse_sidebar_map(input_dir, output)
-        print(sidebar_links)
 
     elif isinstance(sidebar_options, dict):
-        pass
+        links = []
+        if sidebar_options["type"] == "pages":
+            for item in sidebar_options["items"]:
+                input_itempath = Path(input_dir).joinpath(item)
+                if input_itempath.exists():
+                    if input_itempath.is_dir():
+                        links.append(recurse_sidebar_map(input_itempath, output))
+                    else:
+                        itempath = Path(item).with_suffix(".html")
+                        for part in range(0, len(output.parts) - 2):
+                            itempath = Path("..").joinpath(itempath)
+                        links.append("<li><a href=\"{link}\">{title}</a></li>".format(link=itempath, title=itempath.stem))
+        sidebar_title = "<h2>{}</h2>".format(sidebar_options["title"]) if sidebar_options["title"] else None
+        sidebar_links = "<ul>\n" + sidebar_title + '\n'.join(links) + "\n</ul>\n"
     
-    return sidebar_links
+    return sidebar_html.format(sidebar_links)
 
