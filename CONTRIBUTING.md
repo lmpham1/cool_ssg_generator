@@ -45,3 +45,15 @@ black .
 ```
 
 Note that if you are using Visual Studio Code as your IDE, it should already format your code as you make changes to a `.py` file.
+
+### Test Your Code with Flake8
+This project uses [Flake8](https://flake8.pycqa.org/en/latest/index.html) as a linter. If you set up the environment with Anaconda, `flake8` should already be installed in the `ssg_env` environment. Otherwise, you can install it by using:
+```console
+pip install flake8
+```
+
+To run the linter, run:
+```console
+flake8 .
+```
+Note that if you are using Visual Studio Code as your IDE, it should already lint your code as you make changes to a `.py` file.

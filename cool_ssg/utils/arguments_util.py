@@ -3,7 +3,9 @@ from utils import config_util
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Generate HTML website from raw data")
+    parser = argparse.ArgumentParser(
+        description="Generate HTML website from raw data"
+    )
 
     parser.add_argument(
         "-v",
@@ -13,39 +15,39 @@ def parse_arguments():
         help="display the current version",
     )
     parser.add_argument(
-        "-i", 
-        "--input", 
-        nargs="+", 
-        help="path to input file or directory"
+        "-i",
+        "--input",
+        nargs="+",
+        help="path to input file or directory",
     )
     parser.add_argument(
-        "-o", 
-        "--output", 
-        help="path to output directory"
+        "-o",
+        "--output",
+        help="path to output directory",
     )
     parser.add_argument(
-        "-s", 
-        "--stylesheets", 
-        nargs="+", 
-        help="attach stylesheet URLs"
+        "-s",
+        "--stylesheets",
+        nargs="+",
+        help="attach stylesheet URLs",
     )
     parser.add_argument(
-        "-l", 
-        "--lang", 
-        help="language of the generated documents, default is en-CA"
+        "-l",
+        "--lang",
+        help="language of the generated documents, default is en-CA",
     )
     parser.add_argument(
-        "-c", 
-        "--config", 
-        help="path to the config file"
+        "-c",
+        "--config",
+        help="path to the config file",
     )
     parser.add_argument(
         "-sb",
         "--sidebar",
         nargs="?",
-        help="generate sidebar from a sidebar config file, default sidebar will be used if no config file is specified",
+        help="generate sidebar from a sidebar config file, default sidebar will be used if no config file is specified",  # noqa: E501
         const="use_default",
-        default=None
+        default=None,
     )
 
     args = parser.parse_args()

@@ -13,7 +13,7 @@ def main():
 
     if input is None:
         print(
-            "ERROR: Input cannot be empty. Please specify input file or folder with --input flag, or refer to --help for documentation"
+            "ERROR: Input cannot be empty. Please specify input file or folder with --input flag, or refer to --help for documentation"  # noqa: E501
         )
         sys.exit(1)
 

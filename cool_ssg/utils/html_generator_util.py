@@ -5,6 +5,7 @@ from pathlib import Path
 # To add new supported file type, simply add to this list
 ACCEPTED_FILES = [".txt", ".md"]
 
+
 # Generate HTML file from filepath, and export to output folder
 def generate_from_file(filepath, output, options, input_dir=None):
     # extract file name without extension
@@ -32,7 +33,8 @@ def generate_from_file(filepath, output, options, input_dir=None):
     return None
 
 
-# Generate HTML files with the same structure as the input folder, and export to output folder
+# Generate HTML files with the same structure as the input folder,
+# and export to output folder
 def generate_from_directory(input_dir, output, options):
     index_links = []
     for filepath in Path(input_dir).rglob("*.*"):
@@ -44,7 +46,7 @@ def generate_from_directory(input_dir, output, options):
         )
         if generated_filepath:
             index_links.append(
-                '<a class="list-item" href="{file}"><li class="link">{title}</li></a>'.format(
+                '<a class="list-item" href="{file}"><li class="link">{title}</li></a>'.format(  # noqa: E501
                     file=generated_filepath.relative_to(output),
                     title=generated_filepath.relative_to(output).stem,
                 )
@@ -69,7 +71,9 @@ def generate_from_directory(input_dir, output, options):
     style_html = ""
     if options["stylesheets"] is not None:
         for stylesheet in options["stylesheets"]:
-            style_html += '<link rel="stylesheet" href="{}">\n'.format(stylesheet)
+            style_html += '<link rel="stylesheet" href="{}">\n'.format(
+                stylesheet
+            )
 
     index_title = Path(input_dir).name
 
@@ -82,25 +86,34 @@ def generate_from_directory(input_dir, output, options):
         lang=options["lang"],
     )
 
-    output_file = open(Path(output).joinpath("index.html"), "w", encoding="utf-8")
+    output_file = open(
+        Path(output).joinpath("index.html"), "w", encoding="utf-8"
+    )
     output_file.write(index_html_content)
     output_file.close()
 
 
 # Create HTML from markdown file
 def process_markdown(html_content):
-    # Parse markdown
+    # Parse bold markdown
     html_content = re.sub(
-        "\*\*([^\s\*.]{1}.*?)\*\*|__([^\s_.]{1}.*?)__",
+        r"\*\*([^\s\*.]{1}.*?)\*\*|__([^\s_.]{1}.*?)__",
         r"<strong>\1\2</strong>",
         html_content,
     )
+    # Parse italic markdown
     html_content = re.sub(
-        "\*([^\s\*.]{1}.*?)\*|_([^\s\_.]{1}.*?)_", r"<em>\1\2</em>", html_content
+        r"\*([^\s\*.]{1}.*?)\*|_([^\s\_.]{1}.*?)_",
+        r"<em>\1\2</em>",
+        html_content,
     )
-    html_content = re.sub("\[(.+)\]\((.+)\)", r'<a href="\2">\1</a>', html_content)
+    # Parse link markdown
     html_content = re.sub(
-        "(\n|(\n<p>))\s{0,3}((---)|(\*\*\*))\s{0,3}((</p>\n)|\n)",
+        r"\[(.+)\]\((.+)\)", r'<a href="\2">\1</a>', html_content
+    )
+    # Parse horizontal rule
+    html_content = re.sub(
+        r"(\n|(\n<p>))\s{0,3}((---)|(\*\*\*))\s{0,3}((</p>\n)|\n)",
         r"\n<hr/>\n",
         html_content,
     )
@@ -145,7 +158,9 @@ def create_html_string(filename, contents, output, options, input_dir=None):
             if isinstance(stylesheet, Path):
                 for part in range(0, len(output.parts) - 2):
                     stylesheet = Path("..").joinpath(stylesheet)
-            style_html += '<link rel="stylesheet" href="{}">\n'.format(stylesheet)
+            style_html += '<link rel="stylesheet" href="{}">\n'.format(
+                stylesheet
+            )
 
     sidebar = generate_sidebar(input_dir, output, options["sidebar"])
 
@@ -175,23 +190,25 @@ def generate_stylesheets(stylesheets, output):
 
     if stylesheets:
         for stylesheet in stylesheets:
-            if stylesheet.startswith("https://") or stylesheet.startswith("http://"):
+            if stylesheet.startswith("https://") or stylesheet.startswith(
+                "http://"
+            ):
                 stylesheet_paths.append(stylesheet)
             elif Path(stylesheet).is_file() and Path(stylesheet).exists():
                 shutil.copy(stylesheet, stylesheet_folder)
                 stylesheet_paths.append(
-                    stylesheet_folder.joinpath(Path(stylesheet).name).relative_to(
-                        output
-                    )
+                    stylesheet_folder.joinpath(
+                        Path(stylesheet).name
+                    ).relative_to(output)
                 )
             else:
                 print("ERROR: Cannot find stylesheet: {}".format(stylesheet))
     else:
         shutil.copy(default_stylesheet, stylesheet_folder)
         stylesheet_paths.append(
-            stylesheet_folder.joinpath(Path(default_stylesheet).name).relative_to(
-                output
-            )
+            stylesheet_folder.joinpath(
+                Path(default_stylesheet).name
+            ).relative_to(output)
         )
 
     return stylesheet_paths
@@ -241,7 +258,9 @@ def generate_sidebar(input_dir, output, sidebar_options):
                 input_itempath = Path(input_dir).joinpath(item)
                 if input_itempath.exists():
                     if input_itempath.is_dir():
-                        links.append(recurse_sidebar_map(input_itempath, output))
+                        links.append(
+                            recurse_sidebar_map(input_itempath, output)
+                        )
                     else:
                         itempath = Path(item).with_suffix(".html")
                         for part in range(0, len(output.parts) - 2):
@@ -256,6 +275,8 @@ def generate_sidebar(input_dir, output, sidebar_options):
             if sidebar_options["title"]
             else None
         )
-        sidebar_links = "<ul>\n" + sidebar_title + "\n".join(links) + "\n</ul>\n"
+        sidebar_links = (
+            "<ul>\n" + sidebar_title + "\n".join(links) + "\n</ul>\n"
+        )
 
     return sidebar_html.format(sidebar_links)
