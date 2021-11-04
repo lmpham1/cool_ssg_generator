@@ -43,3 +43,5 @@ To format the code, run the following command:
 ```console
 black .
 ```
+
+Note that if you are using Visual Studio Code as your IDE, it should already format your code as you make changes to a `.py` file.
