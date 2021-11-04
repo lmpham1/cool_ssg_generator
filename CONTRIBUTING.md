@@ -35,7 +35,7 @@ Also, please make sure you include as much details as possible in your issues.
 
 ### Format Your Code with Black Formatter
 This project uses [black](https://pypi.org/project/black/) for code formatting. If you set up the environment with Anaconda, `black` should already be installed in the `ssg_env` environment. Otherwise, you can install it by using:
-```
+```console
 pip install black
 ```
 
