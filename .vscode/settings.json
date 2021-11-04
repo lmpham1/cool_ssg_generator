@@ -1,0 +1,7 @@
+{
+    "cSpell.words": [
+        "rglob"
+    ],
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true,
+}

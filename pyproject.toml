@@ -1,0 +1,3 @@
+[tool.black]
+include='cool_ssg/.*\.py'
+exclude='cool_ssg/utils/arguments_util.py'

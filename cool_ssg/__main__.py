@@ -9,21 +9,25 @@ def main():
     options = arguments_util.parse_arguments()
 
     input = options["input"]
-    output = options["output"] 
+    output = options["output"]
 
     if input is None:
-        print("ERROR: Input cannot be empty. Please specify input file or folder with --input flag, or refer to --help for documentation")
+        print(
+            "ERROR: Input cannot be empty. Please specify input file or folder with --input flag, or refer to --help for documentation"
+        )
         sys.exit(1)
 
     # check if output is specified
     if output is None:
-        output = Path('.').joinpath('dist')
+        output = Path(".").joinpath("dist")
     elif not Path(output).exists():
         print("ERROR: Could not find output folder")
         sys.exit(1)
 
     html_generator_util.empty_folder(output)
-    options["stylesheets"] = html_generator_util.generate_stylesheets(options["stylesheets"], output)
+    options["stylesheets"] = html_generator_util.generate_stylesheets(
+        options["stylesheets"], output
+    )
 
     # check if input is a file or a directory
     for item in input:
@@ -35,5 +39,6 @@ def main():
         else:
             print("ERROR: Could not find input file/folder")
 
-if __name__ == '__main__': 
+
+if __name__ == "__main__":
     main()
