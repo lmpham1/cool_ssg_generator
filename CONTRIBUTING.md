@@ -17,13 +17,12 @@ Then, you'll probably want to navigate to the project's root folder:
 cd cool_ssg_generator
 ```
 
-#### For Anaconda users (optional)
+#### Setting up the environment with Anaconda
 If you want to quickly set up a virtual development environment with Anaconda, use the following commands in the project's root folder:
 ```console
 conda env create -f environment.yml
 conda activate ssg_env
 ```
-For more information on Anaconda, please refer to their [official documentation](https://docs.anaconda.com/)
 
 ***
 
@@ -31,3 +30,16 @@ For more information on Anaconda, please refer to their [official documentation]
 Any issue is welcome! Just make sure that you check the [list of issue](https://github.com/lmpham1/cool_ssg_generator/issues) to see if it already exists before filing.
 
 Also, please make sure you include as much details as possible in your issues.
+
+***
+
+### Format Your Code with Black Formatter
+This project uses [black](https://pypi.org/project/black/) for code formatting. If you set up the environment with Anaconda, `black` should already be installed in the `ssg_env` environment. Otherwise, you can install it by using:
+```
+pip install black
+```
+
+To format the code, run the following command:
+```console
+black .
+```
