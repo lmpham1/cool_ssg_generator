@@ -7,4 +7,6 @@ dependencies:
   - black=21.10b0=pypi_0
   - flake8=4.0.1=pypi_0
   - pre-commit=2.15.0=pypi_0
+  - pytest=6.2.5=pypi_0
+  - coverage=6.1.2=pypi_0
 

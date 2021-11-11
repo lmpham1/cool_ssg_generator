@@ -20,7 +20,7 @@ def generate_from_file(filepath, output, options, input_dir=None):
                 filename, contents, output_filepath, options, input_dir
             )
 
-            if filepath.name.endswith(".md"):
+            if Path(filepath).name.endswith(".md"):
                 out_content = process_markdown(out_content)
 
             output.mkdir(parents=True, exist_ok=True)
@@ -109,7 +109,7 @@ def process_markdown(html_content):
     )
     # Parse link markdown
     html_content = re.sub(
-        r"\[(.+)\]\((.+)\)", r'<a href="\2">\1</a>', html_content
+        r"\[(.+)\]\((.+\..+)\)", r'<a href="\2">\1</a>', html_content
     )
     # Parse horizontal rule
     html_content = re.sub(
@@ -146,6 +146,7 @@ def create_html_string(filename, contents, output, options, input_dir=None):
             {sidebar}
             <div class=\"content-container\">
                 <h1>{title}</h1>
+
                 {contents}
             </div>
         </div>
