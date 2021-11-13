@@ -2,6 +2,9 @@
 
 ### Dependencies
 - [Python 3.8.5](https://www.python.org/downloads/) (or higher)
+- [black 21.10b0](https://pypi.org/project/black/)
+- [Flake8 4.0.1](https://flake8.pycqa.org/en/latest/index.html)
+- [pytest 6.2.5](https://docs.pytest.org/en/latest/)
 
 ***
 
