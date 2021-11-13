@@ -10,7 +10,7 @@ def test_config():
     }
     config_path = "tests/testfiles/test_config.json"
     config_util.get_config(config_path, options)
-    assert options["output"] is not None
-    assert options["lang"] is not None
+    assert options["output"] == "output"
+    assert options["lang"] == "en"
     assert options["input"] is None
     assert options["stylesheets"] is not None
