@@ -257,7 +257,6 @@ def generate_sidebar(input_dir, output, sidebar_options):
         if sidebar_options["type"] == "pages":
             for item in sidebar_options["items"]:
                 input_itempath = Path(input_dir).joinpath(item)
-                print(input_itempath)
                 if input_itempath.exists():
                     if input_itempath.is_dir():
                         links.append(
