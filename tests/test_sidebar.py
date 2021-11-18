@@ -16,17 +16,25 @@ class TestSidebar:
         result = html_generator_util.generate_sidebar(
             self.input_dir, self.output, -1
         )
-        print(result)
+        link1 = Path("sample").joinpath("Silver Blaze.html")
+        link2 = Path("sample").joinpath(
+            "The Adventure of the Six Napoleans.html"
+        )
+        link3 = Path("sample").joinpath(
+            "The Adventure of the Speckled Band.html"
+        )
+        link4 = Path("sample").joinpath("The Naval Treaty.html")
+        link5 = Path("sample").joinpath("The Red Headed League.html")
         expected_result = """<div class="sidebar-container">
 <ul>
 <li>
 sample
 <ul>
-<li><a href="sample\\Silver Blaze.html">Silver Blaze</a></li>
-<li><a href="sample\\The Adventure of the Six Napoleans.html">The Adventure of the Six Napoleans</a></li>
-<li><a href="sample\\The Adventure of the Speckled Band.html">The Adventure of the Speckled Band</a></li>
-<li><a href="sample\\The Naval Treaty.html">The Naval Treaty</a></li>
-<li><a href="sample\\The Red Headed League.html">The Red Headed League</a></li>
+<li><a href="{link1}">Silver Blaze</a></li>
+<li><a href="{link2}">The Adventure of the Six Napoleans</a></li>
+<li><a href="{link3}">The Adventure of the Speckled Band</a></li>
+<li><a href="{link4}">The Naval Treaty</a></li>
+<li><a href="{link5}">The Red Headed League</a></li>
 </ul>
 </li>
 <li><a href="test_general.html">test_general</a></li>
@@ -36,7 +44,13 @@ sample
 </ul>
 
 </div>
-"""  # noqa: E501,W605
+""".format(
+            link1=link1,
+            link2=link2,
+            link3=link3,
+            link4=link4,
+            link5=link5,
+        )  # noqa: E501,W605
         assert result == expected_result
 
     def test_custom_sidebar(self):
@@ -48,19 +62,33 @@ sample
         result = html_generator_util.generate_sidebar(
             self.input_dir, self.output, sidebar_config
         )
-        print(result)
+        link1 = Path("sample").joinpath("Silver Blaze.html")
+        link2 = Path("sample").joinpath(
+            "The Adventure of the Six Napoleans.html"
+        )
+        link3 = Path("sample").joinpath(
+            "The Adventure of the Speckled Band.html"
+        )
+        link4 = Path("sample").joinpath("The Naval Treaty.html")
+        link5 = Path("sample").joinpath("The Red Headed League.html")
         expected_result = """<div class="sidebar-container">
 <ul>
 <h2>sample stories</h2><ul>
-<li><a href="sample\\Silver Blaze.html">Silver Blaze</a></li>
-<li><a href="sample\\The Adventure of the Six Napoleans.html">The Adventure of the Six Napoleans</a></li>
-<li><a href="sample\\The Adventure of the Speckled Band.html">The Adventure of the Speckled Band</a></li>
-<li><a href="sample\\The Naval Treaty.html">The Naval Treaty</a></li>
-<li><a href="sample\\The Red Headed League.html">The Red Headed League</a></li>
+<li><a href="{link1}">Silver Blaze</a></li>
+<li><a href="{link2}">The Adventure of the Six Napoleans</a></li>
+<li><a href="{link3}">The Adventure of the Speckled Band</a></li>
+<li><a href="{link4}">The Naval Treaty</a></li>
+<li><a href="{link5}">The Red Headed League</a></li>
 </ul>
 
 </ul>
 
 </div>
-"""  # noqa: E501,W605
+""".format(
+            link1=link1,
+            link2=link2,
+            link3=link3,
+            link4=link4,
+            link5=link5,
+        )  # noqa: E501,W605
         assert result == expected_result
