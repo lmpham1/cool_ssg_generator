@@ -3,7 +3,6 @@ channels:
   - defaults
 dependencies:
   - pip:
-    - python==3.8.5
     - black==21.10b0
     - flake8==4.0.1
     - pre-commit==2.15.0
