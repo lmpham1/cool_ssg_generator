@@ -3,10 +3,10 @@ channels:
   - defaults
 dependencies:
   - pip:
-    - python==3.8.5=h5fd99cc_1
-    - black==21.10b0=pypi_0
-    - flake8==4.0.1=pypi_0
-    - pre-commit==2.15.0=pypi_0
-    - pytest==6.2.5=pypi_0
-    - coverage==6.1.2=pypi_0
+    - python==3.8.5
+    - black==21.10b0
+    - flake8==4.0.1
+    - pre-commit==2.15.0
+    - pytest==6.2.5
+    - coverage==6.1.2
 
