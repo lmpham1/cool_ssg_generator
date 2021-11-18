@@ -215,19 +215,19 @@ def generate_stylesheets(stylesheets, output):
     return stylesheet_paths
 
 
-def recurse_sidebar_map(input_dir, output):
+def recurse_sidebar_map(sidebar_dir, output, input_dir):
     links = []
-    for item in Path(input_dir).glob("*"):
+    for item in Path(sidebar_dir).glob("*"):
         itempath = Path(item)
         if itempath.is_dir():
-            subfolder_links = recurse_sidebar_map(item, output)
+            subfolder_links = recurse_sidebar_map(item, output, input_dir)
             if subfolder_links:
                 links.append(
                     "<li>\n" + itempath.name + "\n" + subfolder_links + "</li>"
                 )
         elif Path(item).is_file() and Path(item).suffix in ACCEPTED_FILES:
             itempath = itempath.with_suffix(".html").relative_to(
-                itempath.parents[len(itempath.parents) - 2]
+                Path(input_dir)
             )
             for part in range(0, len(output.parts) - 2):
                 itempath = Path("..").joinpath(itempath)
@@ -249,8 +249,8 @@ def generate_sidebar(input_dir, output, sidebar_options):
     sidebar_html = '<div class="sidebar-container">\n{}\n</div>\n'
     sidebar_links = None
 
-    if isinstance(sidebar_options, str):
-        sidebar_links = recurse_sidebar_map(input_dir, output)
+    if sidebar_options == -1:
+        sidebar_links = recurse_sidebar_map(input_dir, output, input_dir)
 
     elif isinstance(sidebar_options, dict):
         links = []
@@ -260,7 +260,9 @@ def generate_sidebar(input_dir, output, sidebar_options):
                 if input_itempath.exists():
                     if input_itempath.is_dir():
                         links.append(
-                            recurse_sidebar_map(input_itempath, output)
+                            recurse_sidebar_map(
+                                input_itempath, output, input_dir
+                            )
                         )
                     else:
                         itempath = Path(item).with_suffix(".html")
