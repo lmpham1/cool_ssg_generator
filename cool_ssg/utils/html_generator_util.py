@@ -1,6 +1,7 @@
 import shutil
 import re
 from pathlib import Path
+from arguments_util import DEFAULT_SIDEBAR
 
 # To add new supported file type, simply add to this list
 ACCEPTED_FILES = [".txt", ".md"]
@@ -249,7 +250,7 @@ def generate_sidebar(input_dir, output, sidebar_options):
     sidebar_html = '<div class="sidebar-container">\n{}\n</div>\n'
     sidebar_links = None
 
-    if isinstance(sidebar_options, str):
+    if sidebar_options == DEFAULT_SIDEBAR:
         sidebar_links = recurse_sidebar_map(input_dir, output)
 
     elif isinstance(sidebar_options, dict):

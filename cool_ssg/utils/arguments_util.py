@@ -1,6 +1,8 @@
 import argparse
 from utils import config_util
 
+DEFAULT_SIDEBAR = -1
+
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
@@ -46,7 +48,7 @@ def parse_arguments():
         "--sidebar",
         nargs="?",
         help="generate sidebar from a sidebar config file, default sidebar will be used if no config file is specified",  # noqa: E501
-        const="use_default",
+        const=DEFAULT_SIDEBAR,
         default=None,
     )
 
@@ -58,7 +60,7 @@ def parse_arguments():
         config_util.get_config(args.config, options)
 
     if args.sidebar:
-        if args.sidebar != "use_default":
+        if args.sidebar != DEFAULT_SIDEBAR:
             config_util.get_sidebar_config(args.sidebar, options)
 
     # Assign default value for unspecified required options
