@@ -27,6 +27,12 @@ conda env create -f environment.yml
 conda activate ssg_env
 ```
 
+#### Non-Anaconda Users
+For non-anaconda users, you can install the dependencies with `pip`:
+```console
+pip install -r requirements.txt
+```
+
 ***
 
 ## Filing An Issue
