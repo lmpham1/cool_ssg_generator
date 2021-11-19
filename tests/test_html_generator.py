@@ -83,7 +83,6 @@ class TestHTMLGenerator:
         result = "\n".join(resultList).strip()
         assert result == expected_result
 
-
     def test_md_complicated(self):
         expected_result = """<h1>This is a mixed MD test.</h1>
 
