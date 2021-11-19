@@ -1,3 +1,4 @@
+from pathlib import Path
 from cool_ssg.utils import html_generator_util
 
 
@@ -11,15 +12,15 @@ class TestHTMLGenerator:
     def open_file(self, filename):
         with open(filename, "r") as file:
             contents = "".join(file.readlines())
-            if filename.endswith(".md"):
-                contents = html_generator_util.process_markdown(contents)
-            result = html_generator_util.create_html_string(
-                filename=filename,
+            contents = html_generator_util.create_html_string(
+                filename=Path(filename).stem,
                 contents=contents,
                 output="./dist/",
                 options=self.options,
             )
-            return result
+            if filename.endswith(".md"):
+                contents = html_generator_util.process_markdown(contents)
+            return contents
 
     def test_paragraph(self):
         expected_result = """<h1>hello world</h1>
@@ -81,4 +82,43 @@ class TestHTMLGenerator:
         result = self.open_file(filename)
         resultList = result.splitlines()[12:21]
         result = "\n".join(resultList).strip()
+        assert result == expected_result
+
+    def test_md_complicated(self):
+        expected_result = """<h1>This is a mixed MD test.</h1>
+
+                <p><strong>This line should be bolded</strong></p>
+
+<p>And <strong>this part should be bolded</strong></p>
+
+<p>This is an <strong><a href="www.example.com">example link</a></strong></p>
+
+<p>And this line is some regular texts. This is a second sentence of the text.</p>
+
+<p>This is another paragraph of the text.</p>"""  # noqa: E501
+        filename = "tests/testfiles/test_md_complicated.md"
+        result = self.open_file(filename)
+        resultList = result.splitlines()[12:23]
+        result = "\n".join(resultList).strip()
+        assert result == expected_result
+
+    def test_md_horizontal_rules(self):
+        expected_result = """<h1>test<em>md</em>horizontal_rule</h1>
+
+                <p>This is a test file for MD horizontal rule</p>
+
+<p>There should be one horizontal rule below.</p>
+
+<hr/>
+
+<p>And there should be two horizontal rules below.</p>
+
+<hr/>
+
+<hr/>"""
+        filename = "tests/testfiles/test_md_horizontal_rule.md"
+        result = self.open_file(filename)
+        resultList = result.splitlines()[12:25]
+        result = "\n".join(resultList).strip()
+        print(result)
         assert result == expected_result
