@@ -90,7 +90,7 @@ class TestHTMLGenerator:
 
 <p>And <strong>this part should be bolded</strong></p>
 
-<p>This is an <a href="www.example.com">example link</a></p>
+<p>This is an <strong><a href="www.example.com">example link</a></strong></p>
 
 <p>And this line is some regular texts. This is a second sentence of the text.</p>
 
