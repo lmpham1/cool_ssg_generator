@@ -5,7 +5,7 @@ This is a mixed MD test.
 
 And __this part should be bolded__
 
-This is an [example link](www.example.com)
+This is an **[example link](www.example.com)**
 
 And this line is some regular texts. This is a second sentence of the text.
 
