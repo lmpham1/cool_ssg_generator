@@ -82,3 +82,22 @@ class TestHTMLGenerator:
         resultList = result.splitlines()[12:21]
         result = "\n".join(resultList).strip()
         assert result == expected_result
+
+
+    def test_md_complicated(self):
+        expected_result = """<h1>This is a mixed MD test.</h1>
+
+                <p><strong>This line should be bolded</strong></p>
+
+<p>And <strong>this part should be bolded</strong></p>
+
+<p>This is an <a href="www.example.com">example link</a></p>
+
+<p>And this line is some regular texts. This is a second sentence of the text.</p>
+
+<p>This is another paragraph of the text.</p>"""
+        filename = "tests/testfiles/test_md_complicated.md"
+        result = self.open_file(filename)
+        resultList = result.splitlines()[12:23]
+        result = "\n".join(resultList).strip()
+        assert result == expected_result
