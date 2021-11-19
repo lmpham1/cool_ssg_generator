@@ -100,3 +100,23 @@ class TestHTMLGenerator:
         resultList = result.splitlines()[12:23]
         result = "\n".join(resultList).strip()
         assert result == expected_result
+
+    def test_md_horizontal_rules(self):
+        expected_result = """<h1>test<em>md</em>horizontal_rule</h1>
+
+                <p>This is a test file for MD horizontal rule</p>
+
+<p>There should be one horizontal rule below.</p>
+
+<hr/>
+
+<p>And there should be two horizontal rules below.</p>
+
+<hr/>
+
+<hr/>"""
+        filename = "tests/testfiles/test_md_horizontal_rule.md"
+        result = self.open_file(filename)
+        resultList = result.splitlines()[12:25]
+        result = "\n".join(resultList).strip()
+        assert result == expected_result
