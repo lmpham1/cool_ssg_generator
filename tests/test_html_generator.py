@@ -1,5 +1,6 @@
 from pathlib import Path
 from cool_ssg.utils import html_generator_util
+import re
 
 
 class TestHTMLGenerator:
@@ -21,6 +22,13 @@ class TestHTMLGenerator:
             if filename.endswith(".md"):
                 contents = html_generator_util.process_markdown(contents)
             return contents
+
+    def test_title(self):
+        expected_title = "hello world"
+        filename = "tests/testfiles/test_general.txt"
+        result = self.open_file(filename)
+        title_found = re.search('<title.*?>(.+?)</title>', result).group(1)
+        assert expected_title == title_found
 
     def test_paragraph(self):
         expected_result = """<h1>hello world</h1>
