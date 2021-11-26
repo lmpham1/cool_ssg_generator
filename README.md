@@ -1,12 +1,11 @@
 
-# cool_ssg_generator
+# cool_ssg
 
-[![PyPI version](https://badge.fury.io/py/cool-ssg-lmpham1.svg)](https://badge.fury.io/py/cool-ssg-lmpham1)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/lmpham1/cool_ssg_generator)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/cool-ssg-lmpham1)
+![GitHub](https://img.shields.io/github/license/lmpham1/cool_ssg_generator)
 
 A compact static site generator with some nice features.
-
-### Dependencies
-- [Python 3.8.5](https://www.python.org/downloads/) (or higher)
 
 ***
 
@@ -63,8 +62,3 @@ python cool_ssg -i test.txt -l en-UK
 python cool_ssg -c config.json
 ```
 **Note**: Using `--config`/`-c` option will ignore/override other options
-
----
-
-### License
-[MIT](LICENSE)
