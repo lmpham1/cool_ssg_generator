@@ -9,3 +9,10 @@ exclude = '''
   | public
 )/
 '''
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "markdown"
+]
+build-backend = "setuptools.build_meta"

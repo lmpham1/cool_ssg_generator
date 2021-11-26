@@ -7,3 +7,4 @@ __pycache__
 config.json
 .pytest_cache
 .coverage
+cool_ssg_lmpham1.egg-info
