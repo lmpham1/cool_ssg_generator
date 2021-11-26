@@ -1,7 +1,9 @@
 
 # cool_ssg_generator
-A simple SSG generator made with Python.
-Current version is 0.1.0
+
+[![PyPI version](https://badge.fury.io/py/cool-ssg-lmpham1.svg)](https://badge.fury.io/py/cool-ssg-lmpham1)
+
+A compact static site generator with some nice features.
 
 ### Dependencies
 - [Python 3.8.5](https://www.python.org/downloads/) (or higher)
